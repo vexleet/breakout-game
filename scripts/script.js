@@ -24,22 +24,24 @@ window.onload = function(){
     for (let c = 0; c < brickColumnCount; c++) {
         bricks[c] = [];
         for (let r = 0; r < brickRowCount; r++){
-            bricks[c][r] = {x: 0, y: 0};
+            bricks[c][r] = {x: 0, y: 0, status: 1};
         }
     }
 
     function drawBricks(){
         for (let c = 0; c < brickColumnCount; c++){
             for (let r = 0; r < brickRowCount; r++){
-                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-                var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
-                ctx.fill();
-                ctx.closePath();
+                if(bricks[c][r].status === 1) {
+                    var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                    var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                    bricks[c][r].x = brickX;
+                    bricks[c][r].y = brickY;
+                    ctx.beginPath();
+                    ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                    ctx.fillStyle = "#0095DD";
+                    ctx.fill();
+                    ctx.closePath();
+                }
             }
         }
     }
@@ -75,6 +77,7 @@ window.onload = function(){
         drawBricks();
         drawBall();
         drawPaddle();
+        collisionDetection();
 
         if(x + dx < ballRadius || x + dx > canvas.width - ballRadius){
             dx = -dx;
@@ -103,7 +106,6 @@ window.onload = function(){
         if(leftPressed && paddleX > 0){
             paddleX -= 5;
         }
-
     }
 
     document.addEventListener("keydown", keyDownHandler, false);
@@ -124,6 +126,21 @@ window.onload = function(){
         }
         else if(e.keyCode === 37){
             leftPressed = false;
+        }
+    }
+
+
+    function collisionDetection() {
+        for (let c = 0; c < brickColumnCount; c++){
+            for (let r = 0; r < brickRowCount; r++){
+                var b = bricks[c][r];
+                if(b.status === 1) {
+                    if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                        dy = -dy;
+                        b.status = 0;
+                    }
+                }
+            }
         }
     }
 
