@@ -48,9 +48,18 @@ window.onload = function(){
             dx = -dx;
             currentColor = getRandomColor();
         }
-        if(y + dy < ballRadius || y + dy > canvas.height - ballRadius){
+        if(y + dy < ballRadius){
             dy = -dy;
             currentColor = getRandomColor();
+        }
+        else if(y + dy > canvas.height - ballRadius){
+            if(x > paddleX && x < paddleX + paddleWidth){
+                dy = -dy;
+            }
+            else {
+                alert("GAME OVER");
+                document.location.reload();
+            }
         }
 
         x += dx;
