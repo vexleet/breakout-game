@@ -6,11 +6,21 @@ window.onload = function(){
     var dx = 2;
     var dy = -2;
     var ballRadius = 10;
+    var currentColor = "#0095DD"
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
 
     function drawBall(){
         ctx.beginPath();
         ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = currentColor;
         ctx.fill();
         ctx.closePath();
     }
@@ -18,14 +28,18 @@ window.onload = function(){
     function draw(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBall();
+
+        if(x + dx < ballRadius || x + dx > canvas.width - ballRadius){
+            dx = -dx;
+            currentColor = getRandomColor();
+        }
+        if(y + dy < ballRadius || y + dy > canvas.height - ballRadius){
+            dy = -dy;
+            currentColor = getRandomColor();
+        }
+
         x += dx;
         y += dy;
-        if(x + dx < 0 || x + dx > canvas.width - ballRadius){
-            dx = -dx;
-        }
-        if(y + dy < 0 || y + dy > canvas.height - ballRadius){
-            dy = -dy;
-        }
     }
 
     setInterval(draw, 10);
