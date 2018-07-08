@@ -21,6 +21,7 @@ window.onload = function(){
     var brickOffsetLeft = 30;
     let bricks = [];
     let score = 0;
+    let lives = 0;
 
     for (let c = 0; c < brickColumnCount; c++) {
         bricks[c] = [];
@@ -112,6 +113,14 @@ window.onload = function(){
 
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
+    document.addEventListener("mousemove", mouseMoveHandler, false);
+
+    function mouseMoveHandler(e) {
+        var relativeX = e.clientX - canvas.offsetLeft;
+        if(relativeX > 0 && relativeX < canvas.width) {
+            paddleX = relativeX - paddleWidth/2;
+        }
+    }
 
     function keyDownHandler(e){
         if(e.keyCode === 39){
