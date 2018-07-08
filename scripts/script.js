@@ -21,7 +21,7 @@ window.onload = function(){
     var brickOffsetLeft = 30;
     let bricks = [];
     let score = 0;
-    let lives = 0;
+    let lives = 3;
 
     for (let c = 0; c < brickColumnCount; c++) {
         bricks[c] = [];
@@ -80,6 +80,7 @@ window.onload = function(){
         drawBall();
         drawPaddle();
         drawScore();
+        drawLives();
         collisionDetection();
 
         if(x + dx < ballRadius || x + dx > canvas.width - ballRadius){
@@ -95,8 +96,18 @@ window.onload = function(){
                 dy = -dy;
             }
             else {
-                alert("GAME OVER");
-                document.location.reload();
+                lives--;
+                if(!lives) {
+                    alert("GAME OVER");
+                    document.location.reload();
+                }
+                else {
+                    x = canvas.width/2;
+                    y = canvas.height-30;
+                    dx = 2;
+                    dy = -2;
+                    paddleX = (canvas.width-paddleWidth)/2;
+                }
             }
         }
 
@@ -109,6 +120,8 @@ window.onload = function(){
         if(leftPressed && paddleX > 0){
             paddleX -= 5;
         }
+
+        requestAnimationFrame(draw);
     }
 
     document.addEventListener("keydown", keyDownHandler, false);
@@ -166,5 +179,11 @@ window.onload = function(){
         ctx.fillText("Score: " + score, 8, 20);
     }
 
-    setInterval(draw, 10);
+    function drawLives() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+    }
+
+    draw();
 };
