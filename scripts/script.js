@@ -12,13 +12,13 @@ window.onload = function(){
     let paddleX = (canvas.width - paddleWidth) / 2;
     let rightPressed = false;
     let leftPressed = false;
-    var brickRowCount = 3;
-    var brickColumnCount = 5;
-    var brickWidth = 75;
-    var brickHeight = 20;
-    var brickPadding = 10;
-    var brickOffsetTop = 30;
-    var brickOffsetLeft = 30;
+    let brickRowCount = 3;
+    let brickColumnCount = 5;
+    let brickWidth = 75;
+    let brickHeight = 20;
+    let brickPadding = 10;
+    let brickOffsetTop = 30;
+    let brickOffsetLeft = 30;
     let bricks = [];
     let score = 0;
     let lives = 3;
@@ -34,8 +34,8 @@ window.onload = function(){
         for (let c = 0; c < brickColumnCount; c++){
             for (let r = 0; r < brickRowCount; r++){
                 if(bricks[c][r].status === 1) {
-                    var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-                    var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                    let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                    let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
                     bricks[c][r].x = brickX;
                     bricks[c][r].y = brickY;
                     ctx.beginPath();
@@ -129,7 +129,7 @@ window.onload = function(){
     document.addEventListener("mousemove", mouseMoveHandler, false);
 
     function mouseMoveHandler(e) {
-        var relativeX = e.clientX - canvas.offsetLeft;
+        let relativeX = e.clientX - canvas.offsetLeft;
         if(relativeX > 0 && relativeX < canvas.width) {
             paddleX = relativeX - paddleWidth/2;
         }
@@ -157,13 +157,13 @@ window.onload = function(){
     function collisionDetection() {
         for (let c = 0; c < brickColumnCount; c++){
             for (let r = 0; r < brickRowCount; r++){
-                var b = bricks[c][r];
+                let b = bricks[c][r];
                 if(b.status === 1) {
                     if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                         dy = -dy;
                         b.status = 0;
                         score++;
-                        if(score == brickRowCount*brickColumnCount){
+                        if(score === brickRowCount*brickColumnCount){
                             alert("CONGRATS YOU WON");
                             document.location.reload();
                         }
