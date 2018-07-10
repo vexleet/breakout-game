@@ -19,16 +19,22 @@ window.onload = function(){
     let brickPadding = 10;
     let brickOffsetTop = 30;
     let brickOffsetLeft = 30;
+    let bricksCounter = 0;
     let bricks = [];
     let score = 0;
     let lives = 3;
+    let level = 1;
 
-    for (let c = 0; c < brickColumnCount; c++) {
-        bricks[c] = [];
-        for (let r = 0; r < brickRowCount; r++){
-            bricks[c][r] = {x: 0, y: 0, status: 1};
+    function buildBricks() {
+        for (let c = 0; c < brickColumnCount; c++) {
+            bricks[c] = [];
+            for (let r = 0; r < brickRowCount; r++) {
+                bricks[c][r] = {x: 0, y: 0, status: 1};
+            }
         }
     }
+
+    buildBricks();
 
     function drawBricks(){
         for (let c = 0; c < brickColumnCount; c++){
@@ -104,7 +110,7 @@ window.onload = function(){
                 else {
                     x = canvas.width/2;
                     y = canvas.height-30;
-                    dx = 2;
+                    dx = -2;
                     dy = -2;
                     paddleX = (canvas.width-paddleWidth)/2;
                 }
@@ -153,7 +159,6 @@ window.onload = function(){
         }
     }
 
-
     function collisionDetection() {
         for (let c = 0; c < brickColumnCount; c++){
             for (let r = 0; r < brickRowCount; r++){
@@ -162,10 +167,10 @@ window.onload = function(){
                     if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                         dy = -dy;
                         b.status = 0;
-                        score++;
-                        if(score === brickRowCount*brickColumnCount){
-                            alert("CONGRATS YOU WON");
-                            document.location.reload();
+                        bricksCounter++;
+                        score+=10;
+                        if(bricksCounter === brickRowCount*brickColumnCount) {
+                            resetLevel();
                         }
                     }
                 }
@@ -183,6 +188,26 @@ window.onload = function(){
         ctx.font = "16px Arial";
         ctx.fillStyle = "#0095DD";
         ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+    }
+
+    function resetLevel(){
+        brickWidth -= 10;
+        brickRowCount += 1;
+        brickColumnCount += 1;
+        brickOffsetLeft -= 5;
+        x = canvas.width/2;
+        y = canvas.height-30;
+        paddleX = (canvas.width-paddleWidth)/2;
+        bricks = [];
+        bricksCounter = 0;
+        level++;
+        if(level === 4){
+            alert("CONGRATS YOU WON!");
+            document.location.reload();
+        }
+        buildBricks();
+        draw();
+
     }
 
     draw();
