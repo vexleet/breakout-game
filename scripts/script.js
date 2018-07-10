@@ -53,7 +53,7 @@ window.onload = function(){
             }
         }
     }
-    
+
     function getRandomColor() {
         let letters = '0123456789ABCDEF';
         let color = '#';
@@ -137,7 +137,14 @@ window.onload = function(){
     function mouseMoveHandler(e) {
         let relativeX = e.clientX - canvas.offsetLeft;
         if(relativeX > 0 && relativeX < canvas.width) {
-            paddleX = relativeX - paddleWidth/2;
+            paddleX = relativeX - paddleWidth / 2;
+            console.log(paddleX);
+            if(paddleX < 0){
+                paddleX = 0;
+            }
+            if(paddleX > canvas.width - paddleWidth){
+                paddleX = canvas.width - paddleWidth;
+            }
         }
     }
 
